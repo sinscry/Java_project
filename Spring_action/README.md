@@ -23,3 +23,9 @@
 			* @Bean配置
 		3. xml配置：
 			* Beans.xml记得放在resources文件夹
+
+2. 高级装配
+	* 逻辑:根据profile选择性装配beans（在Profile包里）
+	* 知识点：
+		1. 可以用javaConfig和Beans.xml两种方式设置Bean的profile
+		2. 
