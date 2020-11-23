@@ -7,6 +7,8 @@
     <title>Insert title here</title>
 </head>
 <body>
-    index.jsp放在webapp下能直接访问
+未注册的用户，请<a href="./register"> 注册</a>！
+<br/>
+已注册的用户，去<a href="./login"> 登录</a>！
 </body>
 </html>

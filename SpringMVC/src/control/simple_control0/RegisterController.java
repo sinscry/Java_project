@@ -1,4 +1,4 @@
-package control;
+package control.simple_control0;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class LoginController {
-    @RequestMapping("/login")
+public class RegisterController {
+    @RequestMapping("/register")
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        ModelAndView model=new ModelAndView("login.jsp");
+        ModelAndView model=new ModelAndView("register.jsp");
         return model;
     }
 }
