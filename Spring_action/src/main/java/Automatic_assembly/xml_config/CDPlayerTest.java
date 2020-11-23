@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("Beans.xml")
+@ContextConfiguration("../../../resources/xml_config.Automatic_assembly/Beans.xml")
 public class CDPlayerTest {
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
