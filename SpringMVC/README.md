@@ -50,12 +50,14 @@
 				</bean>
 				```
 			3. 开放路径访问:
+				`xmlns:mvc="http://www.springframework.org/schema/mvc"`
+				`http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd`
 				```
 				<!-- 允许images目录下的所有文件可见 -->
 				<mvc:resources location="/images/" mapping="/images/**" />
 				```
 				
-		3. 控制器通过域名返还页面文件(html,jsp):
+		3. Controller控制器通过域名返还页面文件(html,jsp):
 			```
 			package control.simple_control0;
 

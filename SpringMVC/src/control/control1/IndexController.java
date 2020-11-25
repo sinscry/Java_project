@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
     @RequestMapping("/login")
     public String login(){
-        return "simple_control0/login.jsp";
+        return "control1/login.jsp";
     }
 
     @RequestMapping("/register")
     public String register(){
-        return "simple_control0/register.jsp";
+        return "control1/register.jsp";
     }
 }

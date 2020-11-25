@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Search</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4 >Please enter a search term</h4>
+    <form action="/result" method="get">
+        <input id="get_search" name="search" type="text"/>
+        <label for="get_search">Get方式</label><br/>
+        <input type="submit" value="Get"/>
+    </form>
+    <form action="/postSearch" method="post">
+        <input id="post_search" name="search" type="text"/>
+        <label for="post_search">Post方式</label><br/>
+        <input type="submit" value="Post"/>
+    </form>
+</div>
+</body>
+</html>

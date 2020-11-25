@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController {
     @RequestMapping("/index")
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        ModelAndView model=new ModelAndView("index.html");
+        ModelAndView model=new ModelAndView("simple_control0/index.html");
         return model;
     }
 }
