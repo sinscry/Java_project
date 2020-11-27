@@ -6,10 +6,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!--    控制器类所在的包-->
-    <!--  从simple_control0包自动装配bean  -->
-<!--    <context:component-scan base-package="control.simple_control0"/>-->
-    <context:component-scan base-package="control.control1"/>
-<!--    在使用resources时必须使用annotation-driven，否则resources元素会阻止任意控制器被调用-->
+    <!--  从a_Hello_World包自动装配bean  -->
+<!--    <context:component-scan base-package="a_Hello_World.controller"/>-->
+    <context:component-scan base-package="d_formatter"/>
+<!--    <mvc:annotation-driven conversion-service="conversionService"/>-->
+<!--    <bean id="conversionService"-->
+<!--          class="org.springframework.context.support.ConversionServiceFactoryBean">-->
+<!--        <property name="converters">-->
+<!--            <list>-->
+<!--                <bean class="c_type_conversion.converter.GoodsConverter"/>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+
+
+
+
+    <!--    在使用resources时必须使用annotation-driven，否则resources元素会阻止任意控制器被调用-->
     <mvc:annotation-driven />
     <!-- 允许css目录下的所有文件可见 -->
     <mvc:resources location="/css/" mapping="/css/**" />

@@ -1,9 +1,9 @@
 # SpringBoot教程
-记录:73页post
+记录:98页3.3.3,卡在bundle语言切换上
 
-1. main函数实行(package Hello_World):
+1. main函数实行(package a_Hello_World):
 	```
-		package Hello_World;
+		package a_Hello_World;
 		import org.springframework.boot.SpringApplication;
 		import org.springframework.boot.autoconfigure.SpringBootApplication;
 		
@@ -14,10 +14,10 @@
 			}
 		}
 	```
-2. Controller自动装配(package Hello_World):
+2. Controller自动装配(package a_Hello_World):
 	1. 注解设置成直接返回文字:`@ResponseBody`
 	```
-	package Hello_World.controller;
+	package a_Hello_World.controller;
 	import org.springframework.stereotype.Controller;
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,7 +63,15 @@
 				* Controller: 
 					若没有name参数则直接userName默认为"default"
 					`public String hello(@RequestParam(value="name",defaultValue = "default") String userName, Model model)`
-3. 模板页面(package Search)
+			2. post传参如下
+			3. 用直接controller添加属性:
+				```
+				@ModelAttribute("dateFormat")
+				public String localeFormat(Locale locale){
+				   return USLocalDateFormatter.getPattern(locale);
+				}
+				```
+3. 模板页面(package b_Search)
 	* default.html:
 	
 	```
@@ -84,21 +92,40 @@
 		<span th:text="${message}">Hello html</span>
 	</div>
 	```
-4. 表单发送(package Search)
+4. 表单发送(package b_Search)
 	1. get方式
-	```
-	<form action="/result" method="get">
-		<input id="search" name="search" type="text"/>
-		<label for="search">Search</label><br/>
-		<input type="submit" value="Submit"/>
-	</form>
-	```
+		* html:
+		```
+		<form action="/result" method="get">
+			<input id="search" name="search" type="text"/>
+			<label for="search">b_Search</label><br/>
+			<input type="submit" value="Submit"/>
+		</form>
+		```
 		* controller同2.2 url传参
 		* <input>中的name对应contrller中的value
 	2. post方式
-		* 更改<form method="post">
-		* 通过post处理数据再:
-			`return "redirect:result"`;
+		* html:
+		```
+		<form action="/postSearch" method="post">
+		<input id="post_search" name="search" type="text"/>
+		<label for="post_search">Post方式</label><br/>
+		<input type="submit" value="Post"/>
+		</form>
+		```
+		* controller:
+		```
+		@RequestMapping(value = "/postSearch", method = RequestMethod.POST)
+		public String postSearch(HttpServletRequest request, RedirectAttributes redirectAttributes){
+			String search = request.getParameter("search");
+			if(search.toLowerCase().contains("struts")){
+				redirectAttributes.addFlashAttribute("error","Try using spring instead!");
+				return "redirect:/";
+			}
+			redirectAttributes.addAttribute("search",search);
+			return "redirect:result";
+		}
+		```
 		
 		
 		

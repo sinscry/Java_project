@@ -4,11 +4,12 @@
       layout:decorator="layout/default">
 <head>
     <meta charset="UTF-8"/>
-    <title>Search</title>
+    <title>b_Search</title>
 </head>
 <body>
 <div layout:fragment="content">
     <h4 >Please enter a search term</h4>
+    <span th:text="${error}"></span><br/>
     <form action="/result" method="get">
         <input id="get_search" name="search" type="text"/>
         <label for="get_search">Get方式</label><br/>
