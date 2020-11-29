@@ -28,4 +28,5 @@
 	* 逻辑:根据profile选择性装配beans（在Profile包里）
 	* 知识点：
 		1. 可以用javaConfig和Beans.xml两种方式设置Bean的profile
-		2. 
+		2. 在DataSourceConfig.class通过@Profile("prod")设置环境
+		3. 在PersistenceTest.class设置@@ActiveProfiles("prod")激活prod环境
