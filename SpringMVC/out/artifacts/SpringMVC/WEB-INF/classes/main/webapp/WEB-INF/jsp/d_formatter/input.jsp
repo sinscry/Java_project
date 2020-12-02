@@ -7,11 +7,23 @@
     <title>添加商品信息</title>
 </head>
 <body>
-<form action="./addGoods" method="post">
+<form action="addGoods" method="post">
     <table border=1 bgcolor="lightblue" align="center">
         <tr>
+            <td>商品名称：</td>
+            <td><input class="textSize" type="text" name="goodsname" /></td>
+        </tr>
+        <tr>
+            <td>商品价格：</td>
+            <td><input class="textSize" type="text" name="goodsprice" /></td>
+        </tr>
+        <tr>
+            <td>商品数量：</td>
+            <td><input class="textSize" type="text" name="goodsnumber" /></td>
+        </tr>
+        <tr>
             <td>商品日期：</td>
-            <td><input class="textSize" type="text" name="goodsdate" />（yyyy-MM-dd）</td>
+            <td><input class="textSize" type="text" name="goodsdata" />（yyyy-MM-dd）</td>
         </tr>
         <tr>
             <td colspan="2" align="center">

@@ -265,8 +265,221 @@
 		</bean>
 		<mvc:annotation-driven conversion-service="conversionService"/>
 		```
-			
-			
+		
+7. json交互
+	* 会根据属性自动绑定pojo类，方便
+	0. 依赖:
+	```
+	<dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+	  <version>2.9.6</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+	<dependency>
+	  <groupId>com.alibaba</groupId>
+	  <artifactId>fastjson</artifactId>
+	  <version>1.2.47</version>
+	</dependency>
+	```
+	1. controller
+	```
+	@Controller
+	public class TestController {
+		/**
+		 * 接收页面请求的JSON参数，并返回JSON格式的结果
+		 */
+		@RequestMapping("testJson")
+		@ResponseBody
+		public Person testJson(@RequestBody Person user) {
+			// 打印接收的JSON格式数据
+			System.out.println("pname=" + user.getPname() + ",password="
+					+ user.getPassword() + ",page" + user.getPage());
+			;
+			// 返回JSON格式的响应
+			return user;
+		}
+
+		@RequestMapping("/index")
+		public String index(){
+			return "f_json/index.jsp";
+		}
+	}
+	```
+	2. html:
+	```
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
+			 pageEncoding="UTF-8"%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	</head>
+	<body>
+	<form action="">
+		用户名：<input type="text" name="pname" id="pname" /><br>
+		密码：<input type="password" name="password" id="password" /> <br>
+		年龄：<input type="text" name="page" id="page"><br>
+		<input type="button" value="测试" onclick="testJson()" />
+	</form>
+	</body>
+	<script type="text/javaScript">
+		function testJson() {
+			//获取输入的值pname为id
+			alert($("#pname").val());
+			alert("${pageContext.request.contextPath }/testJson");
+			var pname = $("#pname").val();
+			var password = $("#password").val();
+			var page = $("#page").val();
+			$.ajax({
+				//请求路径
+				url : "${pageContext.request.contextPath }/testJson",
+				//请求类型
+				type : "post",
+				//data表示发送的数据
+				data : JSON.stringify({
+					pname : pname,
+					password : password,
+					page : page
+				}), //定义发送请求的数据格式为JSON字符串
+				contentType : "application/json;charset=utf-8",
+				//定义回调响应的数据格式为JSON字符串，该属性可以省略
+				dataType : "json",
+				//成功响应的结果
+				success : function(data) {
+					if (data != null) {
+						alert("输入的用户名：" + data.pname + "，密码：" + data.password
+							+ "， 年龄：" + data.page);
+					}
+				}
+			});
+		}
+	</script>
+	</html>
+	```
+	3. pojo
+	```
+	public class Person {
+		private String pname;
+		private String password;
+		private Integer page;
+		//省略setter和getter方法
+
+		public void setPname(String pname) {
+			this.pname = pname;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public void setPage(Integer page) {
+			this.page = page;
+		}
+
+		public String getPname() {
+			return pname;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public Integer getPage() {
+			return page;
+		}
+	}
+	```
+7. Vue交互
+	* 利用axios和Vue实现post交互springMVC，注意设置跨域问题
+	0. web.xml:
+	```
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xmlns:context="http://www.springframework.org/schema/context"
+		   xmlns:mvc="http://www.springframework.org/schema/mvc"
+		   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+		<!--    控制器类所在的包-->
+		<context:component-scan base-package="controller"/>
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<!--    /WEB-INF/page/意为页面的路径，.jsp为页面格式-->
+			<property name="prefix" value="/WEB-INF/page/"/>
+	<!--        <property name="suffix" value=".jsp"/>-->
+		</bean>
+		<mvc:annotation-driven />
+	</beans>
+	```
+	1. springMVC版本必须高于4.3.7才能通过`@CrossOrigin`设置跨域
+	```
+	<dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.3.1</version>
+    </dependency>
+	```
+	2. controller
+	```
+		@Controller
+		@CrossOrigin//设置允许跨域访问
+		public class indexController {
+			@RequestMapping("/index")
+			public String index(){
+				return "index.html";
+			}
+
+			@RequestMapping("/json")
+			@ResponseBody
+			public String json(){
+				JSONObject result = new JSONObject();
+				result.put("name","sinscry");
+				System.out.println(result.toString());
+				return result.toString();
+			}
+		}
+	```
+	3. html
+	```
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue教程</title>
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+	</head>
+	<body>
+	 <div id="app">
+			{{ info }}
+			{{name}}
+		</div>
+	</body>
+	<script type="text/javascript">
+		new Vue({
+			el:'#app',
+			data(){
+				return {
+					info:null,
+					name:null
+
+				}
+			},
+			mounted(){
+				axios.post("http://localhost:8080/SpringMVC_Vue/json")
+				.then(res => (
+						alert(res.data.name),
+						this.info = res.data,
+						this.name=res.data.name
+				))
+			}
+		})
+	</script>
+	</html>
+	```
 			
 			
 			

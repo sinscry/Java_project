@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+    <form action="" id="app">
+        用户名：<input type="text" v-model="uname" /><br>
+        密码：<input type="password" v-model="upassword"  /> <br>
+        <input type="button" value="测试" v-on:click="testJson" />
+    </form>
+</body>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            uname:'',
+            upassword:''
+        },
+        methods:{
+            testJson:function (event){
+                axios.post("http://localhost:8080/SpringMVC_Vue/user",{
+                    uname:this.uname,
+                    upassword: this.upassword
+                }).then(res => (alert(res.data)))
+            }
+        }
+    })
+</script>
+</html>

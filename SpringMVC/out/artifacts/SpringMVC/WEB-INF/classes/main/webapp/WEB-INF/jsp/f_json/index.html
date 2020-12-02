@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<form action="" id="app">
+    用户名：<input v-model="pname" /><br>
+    密码：<input type="password" v-model="password" /> <br>
+    年龄：<input type="text" v-model="page"/><br>
+    <button v-on:click="testJson">测试</button>
+</form>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            pname: '',
+            password:'',
+            page: ''
+
+        },
+        // 在 `methods` 对象中定义方法
+        methods: {
+            testJson: function (event) {
+                // `this` 在方法里指当前 Vue 实例
+                if (this.pname != '') {
+                    alert('Hello ' + this.pname + '!');
+                    axios.post("localhost:8080/SpringMVC/json/testJson", {
+                        pname : 'g',
+                        password : 'password',
+                        page : 'page'
+                    }).then(function (responese) {
+                        console.log("response");
+                    });
+
+
+                }
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
