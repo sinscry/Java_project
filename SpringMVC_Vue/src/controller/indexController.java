@@ -11,17 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @CrossOrigin
 public class indexController {
-    @RequestMapping("/index")
+    @RequestMapping({"/index","/"})
     public String index(){
         return "index.html";
     }
 
-    @RequestMapping("/json")
-    @ResponseBody
-    public String json(){
-        JSONObject result = new JSONObject();
-        result.put("name","sinscry");
-        System.out.println(result.toString());
-        return result.toString();
-    }
 }

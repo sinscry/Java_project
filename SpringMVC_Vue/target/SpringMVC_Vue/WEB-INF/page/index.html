@@ -2,35 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vue教程</title>
+    <title>首页</title>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 </head>
 <body>
  <div id="app">
-        {{ info }}
-        {{name}}
+        首页
     </div>
 </body>
 <script type="text/javascript">
-    new Vue({
-        el:'#app',
-        data(){
-            return {
-                info:null,
-                name:null
 
-            }
-        },
-        mounted(){
-            axios.post("http://localhost:8080/SpringMVC_Vue/json")
-            .then(res => (
-                    alert(res.data.name),
-                    this.info = res.data,
-                    this.name=res.data.name
-            ))
-        }
-    })
 
 </script>
 </html>

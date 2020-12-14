@@ -36,6 +36,12 @@
 				<servlet-name>default</servlet-name>
 				<url-pattern>*.html</url-pattern>
 			  </servlet-mapping>
+			  
+			  <!--  设置这个能映射"\"首页  -->
+			  <welcome-file-list>
+				<welcome-file>index</welcome-file>
+			  </welcome-file-list>
+			  
 			</web-app>
 			```
 		2. HelloMVC-servlet装配控制器配置:
