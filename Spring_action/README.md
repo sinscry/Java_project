@@ -53,3 +53,109 @@
 				* 在Web应用中，为每个会话创建一个bean实例
 				* @Scope(value=WebApplicationContext.SCOPE_SESSION,
 						proxyModel=ScopedProxyMode.INTERFACES)
+
+3. 面向切面编程
+	* package Aop
+	1. 定义切面:
+		* 逻辑: 使用注解@Aspect表明是切面
+		* 知识点：
+			1. 调用时段：
+				* @After：通知方法在目标返回或抛出异常后调用
+				* @AfterReturing：通知方法在目标方法返回后调用
+				* @AfterThrowing：通知方法在目标方法抛出异常后调用
+				* @Around：通知方法会将目标方法封装起来
+				* @Before：通知方法会在目标方法调用前执行
+			2. 表达式:
+				0. 参数表达式:
+					1. 无参:
+						1. 逻辑:在Aop.concert包下Performance类的方法perform执行前执行 
+						2. `"execution(** Aop.concert.Performance.perform(..))"`
+					2. 有参:
+						1. 逻辑:接受int类型参数，指定参数为trackNumber
+						2. `"execution(* soundsystem.CompactDisc.playTrack(int))&& args(trackNumber)"`
+				1. @Before示例:
+					* 逻辑:
+					* 直接使用: 
+						```
+						@Before("execution(** Aop.concert.Performance.perform(..))")
+						public void silenceCellPhones(){
+							System.out.println("Silencing cell phones");
+						}
+						```
+					* 定义切点:
+						1. 定义:
+							```
+							@Pointcut("execution(** Aop.concert.Performance.perform(..))")
+							public void performance(){}
+							```
+						2. 使用:
+							```
+							@Before("performance()")
+							public void takeSeats(){
+								System.out.println("Taking seats");
+							}
+							```
+				2. @Around示例:
+					1. 逻辑: 通过jp.proceed实现@Before和@After结合
+						```
+						@Around("performance()")
+						public void watchPerformance(ProceedingJoinPoint jp){
+							try{
+								System.out.println("Silencing cell phones");
+								System.out.println("taking seats");
+								jp.proceed();
+								System.out.println("CLAP CLAP CLAP!!!");
+							}catch (Throwable e){
+								System.out.println("Demanding a refund");
+							}
+						}
+						```
+					2. 知识点: jp.proceed()如果不调用会阻塞对被通知方法的访问
+			3. JavaConfig启用Aspect注解自动代理:
+				```
+				@Configuration
+				@EnableAspectJAutoProxy
+				public class AopConfig {
+					@Bean
+					public Dance Dancer(){
+						return new Dance();
+					}
+
+					@Bean
+					public Audience audience(){
+						return new Audience();
+					}
+				}
+				```
+			4. 注解引入新方法:
+				1. 使DefaultEncoreable拥有Performance.perform()方法
+				```
+				@Aspect
+				public class EncoreableIntroducer {
+					@DeclareParents(value = "Aop.concert.Performance+",
+									defaultImpl = DefaultEncoreable.class)
+					public static Encoreable encoreable;
+				}
+				```
+				2. 使用时得强转类型:
+				```
+					encoreable.performEncore();
+					Performance p2 = (Performance) encoreable;
+					p2.perform();
+				```
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
