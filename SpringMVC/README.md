@@ -296,7 +296,7 @@
 		 * 接收页面请求的JSON参数，并返回JSON格式的结果
 		 */
 		@RequestMapping("testJson")
-		@ResponseBody
+		
 		public Person testJson(@RequestBody Person user) {
 			// 打印接收的JSON格式数据
 			System.out.println("pname=" + user.getPname() + ",password="
@@ -486,6 +486,89 @@
 	</script>
 	</html>
 	```
-			
+
+8. JSON动态上传文件:
+	0. 链接:https://www.jb51.net/article/170777.htm
+	1. 依赖:
+		```
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		```
+	2. html:
+		```
+		<div id="app">
+			<form>
+				<input type="file" name="file"/>
+				<button @click="submitForm($event)">提交</button>
+			</form>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data(){
+
+				},
+				methods:{
+					submitForm(event){
+						event.preventDefault();
+						let file = document.getElementsByName('file')[0].files[0];
+						let formData = new FormData();
+						formData.append('file', file);
+
+						let config = {
+							headers: { "Content-Type": "multipart/form-data;boundary="+new Date().getTime() }
+						}
+						axios
+						.post("http://localhost:8080/Data_analyst_web_war/upload_file_json",formData,config)
+						.then(function (response) {
+							console.log(response);
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
+					}
+				}
+			})
+		</script>
+		```
+	3. Controller:
+		```
+		@RequestMapping("/upload_file_json")
+		@ResponseBody
+		public String upload_file_json(@RequestParam("file") MultipartFile file){
+			// 判断文件是否为空，空则返回失败页面
+			if (file.isEmpty()) {
+				return "{'result' : 'FAIL'}";
+			}
+			// 获取文件存储路径（绝对路径）
+			String path = req.getServletContext().getRealPath("/WEB-INF/file");
+			// 获取原文件名
+			String fileName = file.getOriginalFilename();
+			// 创建文件实例
+			File filePath = new File(path, fileName);
+			// 如果文件目录不存在，创建目录
+			if (!filePath.getParentFile().exists()) {
+				filePath.getParentFile().mkdirs();
+				System.out.println("创建目录" + filePath);
+			}
+			// 写入文件
+			file.transferTo(filePath);
+			return "{'result' : 'OK'}";
+		}  
+		```
+	4. springmvc.xml:
+		```
+		<bean id="multipartResolver"
+			class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!--上传文件的最大大小，单位为字节 --> 
+			<property name="maxUploadSize" value="17367648787"></property>
+			 
+			<!-- 上传文件的编码 -->
+			<property name="defaultEncoding" value="UTF-8"></property>
+		</bean>
+		```
 			
 			
