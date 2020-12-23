@@ -26,4 +26,10 @@ public class IndexController {
         model.addAttribute("message","json");
         return result.toJSONString();
     }
+	@RequestMapping("/json_list")
+	@ResponseBody
+	public String json_list() {
+        JSONArray jsonArray = JSONArray.parseArray("[{'name':'梁鸿振','stock_list':[{'stock_id':'110059','stock_nm':'浦发银行','sprice':'9.72','oprice':'9.71'}]}]");
+        return jsonArray.toString();
+    }
 }

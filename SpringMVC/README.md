@@ -398,7 +398,7 @@
 		}
 	}
 	```
-7. Vue交互
+7. Vue_json交互
 	* 利用axios和Vue实现post交互springMVC，注意设置跨域问题
 	0. web.xml:
 	```

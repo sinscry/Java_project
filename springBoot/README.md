@@ -1,6 +1,24 @@
 # SpringBoot教程
 记录:98页3.3.3,卡在bundle语言切换上
 
+0. 依赖:
+	```
+	<!--指定父级依赖-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+    <!--添加依赖-->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+	```
+
+
 1. main函数实行(package a_Hello_World):
 	```
 		package a_Hello_World;
@@ -31,7 +49,30 @@
 		}
 	}
 	```
-	2. 传递参数页面
+	2. 访问html界面:
+		1. 创建文件
+			* 在resources下创建`static.pages`, 把html放进去
+			* 在resources下创建`application.properties`写入:
+				```
+				spring.mvc.view.prefix=/pages/
+				spring.mvc.view.suffix=.html
+				```
+		2. Controller:
+			```
+			@Controller
+			public class IndexController {
+				@RequestMapping("/")
+				public String index(Model model){
+					return "Index";
+				}
+			}
+			```
+	
+	
+	
+	
+	
+	3. 传递参数页面
 		* 当访问"http://localhost:8080/"他会自动关联到resultPage.html
 		* resultPage.html设置:
 		```
