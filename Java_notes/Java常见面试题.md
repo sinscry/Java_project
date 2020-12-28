@@ -404,7 +404,14 @@
 	68. 说一些session的工作原理?
 		* 其实session是一个存在服务器上的类似于一个散列表格的文件。里面存有我们需要的信息，在我们需要用的时候可以从里面取出来。类似于一个大号的map吧，里面的键存储的是用户的sessionid，用户向服务器发送请求的时候会带上这个sessionid。这时就可以从中取出对应的值了。
 	69. 如果客户端禁止cookie能实现session吗？
-		* Cookie与Session，一般认为是两个独立的东西，Session采用的是在服务端保持状态的方案，而Cookie采用的是在客户端保持状态的方案。但为什么禁用Cookie
+		* Cookie与Session，一般认为是两个独立的东西，Session采用的是在服务端保持状态的方案，而Cookie采用的是在客户端保持状态的方案。但为什么禁用Cookie就不能得到Session呢？因为Session是用Session ID来确定当前对话所对应的服务器Session，而Session ID是通过Cookie来传递的，禁用Cookie相当于失去了Session ID，也就得不到Session了。
+		* 假定用户关闭Cookie的情况下使用Session，其实现途径有以下几种：
+			1.  设置php.ini配置文件中的"session.use_trans_sid = 1",或者编译时打开"--enable-trans-sid"选项，让PHP自动跨页传递Session ID
+			2. 手动通过URL传值，隐藏表单传递Session ID
+			3. 用文件、数据库等形式保存Session ID，在跨页过程中手动调用。
+	70. springmvc和struts区别是什么?
+		* 拦截机制不同：
+			* Struct2是类级别的拦截，每次请求会创建一个Action，和Spring整合时Struts2的ActionBean注入作用域是原型模式prototype，然后通过setter，getter把request数据注入到属性。Struts2
    		
 		
 		
