@@ -24,8 +24,14 @@
     1. DirectMemoryOOM: 通过申请本机内存导致内存溢出
     
 4. 垃圾回收
-    * 循环引用：ReferenceCountingGC
-    * 自我拯救: FinalizeEscapeGC  
+    * 实战:
+        * 循环引用：ReferenceCountingGC
+        * 自我拯救: FinalizeEscapeGC
+        * 对象优先在Eden分配: testAllocation //java  -verbose:gc -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=8 testAllocation
+        * 大对象直接进入老年代: testPretenureSizeThreshold
+        * 长期存活的对象将进入老年代：testTenuringThreshold
+        * 动态对象判定: testTenuringThreshold2
+        * 空间分配担保: testHandlePromotion
     * 可达性分析算法：当前主流
         * 固定GC Roots对象: 
             1. 虚拟机栈引用的对象， 
@@ -103,6 +109,22 @@
                         * 除了2外都暂停用户线程，目标：延迟可控下尽可能获得高吞吐量
                         * 期望停顿时间：100-300毫秒
                 * CMS vs G1: 小应用CMS，大应用G1，平衡点通常在6GB-8GB
+        3. 低延迟收集器
+            1. Shenandoah收集器
+                * JDK 12：只有OpenJDK支持,RedHat公司研发
+                * 目标：在任何堆内存大小下都可以把垃圾收集停顿控制在10毫秒内，并发清理垃圾
+                * 发展：由G1演变来，不使用分代采集，将记忆集改成连接矩阵
+                * 实现：转发指针
+            2. ZGC(Z Garbage Collector):
+                * 与Shenandoah高度相似
+                * 特征：基于Region内存布局的，(暂时)不设分代的，使用读屏障，染色指针和内存多重映射实现的可并发的标记-整理算法的，低延迟收集器
+                * 动态Region:小2MB:小于256KB小对象， 中32MB：256kb<x<4MB对象，大不固定2MB倍数：4MB以上对象
+                * 实现：染色指针：转发指针带信息
+        4. 垃圾收集器选择
+            * 落后JDK和软硬件，4GB到6GB以下堆内存:CMS，更大堆内存:G1
+            1. 数据分析，科学计算：吞吐量优先
+            2. SLA应用，停顿时间影响服务质量：延迟优先->ZGC,稳定:Shenandoah
+            3. 客户端应用或嵌入式应用：内存占用优先
             
             
             
